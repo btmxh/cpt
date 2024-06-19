@@ -9,10 +9,6 @@
 #include <string_view>
 #include <type_traits>
 
-#pragma cpt begin
-#include "is_iterable.hpp"
-#pragma cpt end
-
 namespace cpt {
 
 template <class T> std::string to_string(const T &value) {
@@ -52,21 +48,20 @@ public:
   template <class T> void ps(const T &value) { append(value); }
 };
 
-template <class Tup> inline void print_tuple(std::ostream &st, const Tup &tup) {
+template <class Tup> void print_tuple(std::ostream &st, const Tup &tup) {
   delim_stream s{st};
   prefix_suffix_raii _{st};
   std::apply([&](const auto &...args) { (s.ps(args), ...); }, tup);
 }
 
 template <class... Args>
-inline std::ostream &operator<<(std::ostream &st,
-                                const std::tuple<Args...> &args) {
+std::ostream &operator<<(std::ostream &st, const std::tuple<Args...> &args) {
   print_tuple(st, args);
   return st;
 }
 
 template <class K, class V>
-inline std::ostream &operator<<(std::ostream &st, const std::pair<K, V> &args) {
+std::ostream &operator<<(std::ostream &st, const std::pair<K, V> &args) {
   print_tuple(st, args);
   return st;
 }
@@ -74,19 +69,18 @@ inline std::ostream &operator<<(std::ostream &st, const std::pair<K, V> &args) {
 // iterable printing
 
 template <class T>
-inline constexpr bool iterable_with_builtin_print =
-std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>;
+constexpr bool iterable_with_builtin_print =
+    std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>;
 
-template <class T, class = void>
-inline constexpr bool is_const_iterable = false;
+template <class T, class = void> constexpr bool is_const_iterable = false;
 
 template <class T>
-inline constexpr bool
+constexpr bool
     is_const_iterable<T, std::void_t<decltype(std::declval<T>().cbegin()),
                                      decltype(std::declval<T>().cend())>> =
         true;
-static_assert(is_iterable<const std::vector<int>>);
-static_assert(!is_iterable<std::queue<int>>);
+static_assert(is_const_iterable<const std::vector<int>>);
+static_assert(!is_const_iterable<std::queue<int>>);
 template <class T, class = std::enable_if_t<
                        is_const_iterable<T> &&
                        !iterable_with_builtin_print<std::decay_t<T>>>>
@@ -155,7 +149,7 @@ template <class... Args> void println_stderr(const Args &...args) {
 #define CPT_DEBUG_INSPECT(...) ::cpt::debug_inspect(#__VA_ARGS__, __VA_ARGS__)
 
 template <class... Args>
-inline void debug_inspect(const char *prefix, const Args &...args) {
+void debug_inspect(const char *prefix, const Args &...args) {
   print_stderr(prefix);
   std::cerr << "=";
   println_stderr(args...);
@@ -163,11 +157,11 @@ inline void debug_inspect(const char *prefix, const Args &...args) {
 
 }; // namespace cpt
 
-template <class... Args> inline void p(const Args &...args) {
+template <class... Args> void p(const Args &...args) {
   ::cpt::println_stdout(args...);
 }
 
-template <class... Args> inline void perr(const Args &...args) {
+template <class... Args> void perr(const Args &...args) {
   ::cpt::println_stderr(args...);
 }
 

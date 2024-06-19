@@ -28,7 +28,7 @@
 
 namespace cpt {
 
-inline constexpr vll fdiv_helper(ll x, ll n) {
+inline vll fdiv_helper(ll x, ll n) {
   return x * x == n ? vll{x} : vll{x, n / x};
 }
 
@@ -70,7 +70,7 @@ public:
 #ifdef __cpp_lib_span
 #include <span>
 
-template <class T> inline auto bisect_span(span<T> sp) {
+template <class T> auto bisect_span(span<T> sp) {
   size_t mid = sp.size() / 2;
   auto left = sp.subspan(0, mid);
   auto right = sp.subspan(mid, sp.size() - mid);

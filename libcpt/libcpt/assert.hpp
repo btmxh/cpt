@@ -12,9 +12,8 @@
 
 namespace cpt {
 template <typename T>
-inline T do_cpt_assert(const char *file, int line, const char *value_str,
-                       T value,
-                       const char *message = "debug assertion failed") {
+T do_cpt_assert(const char *file, int line, const char *value_str, T value,
+                const char *message = "debug assertion failed") {
   if (!value) {
     std::cerr << message << " at " << file << ":" << line << ": " << value_str
               << '\n';

@@ -11,13 +11,13 @@ inline constexpr ll MOD = 1000000007;
 inline constexpr ll MODA = 998244353;
 inline constexpr ll MODN = -1; // null modulo: mod(x, MODN) = x for all x
 
-inline constexpr ll mod(ll x, ll y) {
+constexpr ll mod(ll x, ll y) {
   if (y == MODN)
     return x;
   return (y + x % y) % y;
 }
 
-inline constexpr ll binary_pow(ll x, ll y, ll m = MOD) {
+constexpr ll binary_pow(ll x, ll y, ll m = MOD) {
   if (y == 0)
     return mod(1, m);
   ll product = binary_pow(x, y / 2, m);
@@ -27,7 +27,7 @@ inline constexpr ll binary_pow(ll x, ll y, ll m = MOD) {
   return product;
 }
 
-inline constexpr bool prime_test_i64(ll p) {
+constexpr bool prime_test_i64(ll p) {
   if (p == MODN)
     return false;
   if (p < 11)
@@ -114,7 +114,7 @@ template <class Int, ll Mod>
 using div_int = std::conditional_t<prime_test_i64(Mod), mod_int<Int, Mod>, Int>;
 
 template <class Int, ll Mod = MOD>
-inline constexpr div_int<Int, Mod> fast_combination(Int n, Int k) {
+constexpr div_int<Int, Mod> fast_combination(Int n, Int k) {
   div_int<Int, Mod> num = 1, den = 1;
   for (Int i = 0; i < k; ++k) {
     num *= n - i;
@@ -125,7 +125,7 @@ inline constexpr div_int<Int, Mod> fast_combination(Int n, Int k) {
 }
 
 template <class Int, ll Mod = MOD>
-inline constexpr div_int<Int, Mod> factorial(Int n) {
+constexpr div_int<Int, Mod> factorial(Int n) {
   div_int<Int, Mod> fac = 1;
   for (Int i = 2; i <= n; ++i) {
     fac *= i;

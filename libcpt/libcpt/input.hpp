@@ -23,7 +23,7 @@ std::istream &operator>>(std::istream &is, std::tuple<Args...> &value) {
 
 // sized input
 template <class T, class Container = std::vector<T>>
-inline Container sized_input(std::istream &is, size_t n) {
+Container sized_input(std::istream &is, size_t n) {
   Container c;
   for (size_t i = 0; i < n; ++i) {
     typename Container::value_type value;
@@ -44,7 +44,7 @@ template <class T, class Container = std::vector<T>> T load_stdin(size_t n) {
 }
 
 template <size_t N, class T = ::cpt::ll>
-inline std::array<T, N> input_stdin_array() {
+std::array<T, N> input_stdin_array() {
   std::array<T, N> arr;
   for (auto &a : arr)
     std::cin >> a;
@@ -54,12 +54,12 @@ inline std::array<T, N> input_stdin_array() {
 } // namespace cpt
 
 // CP friendly API
-template <class T = long long> inline T input() {
+template <class T = long long> T input() {
   return cpt::input_stdin<T>();
 }
 
 template <class T = ::cpt::ll, class Container = std::vector<T>>
-inline Container load(::cpt::ll n) {
+Container load(::cpt::ll n) {
   return cpt::sized_input<T, Container>(std::cin, ::cpt::ll_to_size(n));
 }
 
