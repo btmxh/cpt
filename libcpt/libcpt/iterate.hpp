@@ -16,15 +16,22 @@
 #define rfs(i, s, e, st) for (::cpt::ll i = e - 1; i >= s; i -= st)
 #define fe(c, ...) for (auto &__VA_ARGS__ : c)
 #define fer(itr, c) for (auto itr = c.rbegin(); itr != c.rend(); ++itr)
+
 #define fdiv(x, n)                                                             \
   for (::cpt::ll x = 1; x * x <= n; ++x)                                       \
-    if (n % x == 0)
+    if (n % x == 0)                                                            \
+      for (::cpt::ll x : fdiv_helper(x, n))
 
 #define all(v) ::std::begin(v), ::std::end(v)
 #define allc(v) ::std::cbegin(v), ::std::cend(v)
 #define allr(v) ::std::rbegin(v), ::std::rend(v)
 
 namespace cpt {
+
+inline constexpr vll fdiv_helper(ll x, ll n) {
+  return x * x == n ? vll{x} : vll{x, n / x};
+}
+
 template <class Int = ll> class int_iterator {
 private:
   Int value;
