@@ -77,17 +77,17 @@ public:
   mod_int &operator-=(mod_int rhs) { return *this = *this - rhs; }
   mod_int &operator*=(mod_int rhs) { return *this = *this * rhs; }
 
-  template <Int M = Mod, class = std::enable_if_t<prime_test_64(M)>>
+  template <Int M = Mod, class = std::enable_if_t<prime_test_i64(M)>>
   mod_int operator/(mod_int rhs) const {
     return *this * rhs.inv();
   }
 
-  template <Int M = Mod, class = std::enable_if_t<prime_test_64(M)>>
+  template <Int M = Mod, class = std::enable_if_t<prime_test_i64(M)>>
   mod_int &operator/=(mod_int rhs) {
     return *this = *this / rhs;
   }
 
-  template <Int M = Mod, class = std::enable_if_t<prime_test_64(M)>>
+  template <Int M = Mod, class = std::enable_if_t<prime_test_i64(M)>>
   mod_int inv() const {
     assert(value != 0, "inv of 0 does not exist");
     return binpow(value, M - 2, M);
