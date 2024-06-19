@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <initializer_list>
 
 #pragma cpt begin
 #include "iterate.hpp"
@@ -26,6 +27,21 @@ template <class It, class Func> It last_true(It begin, It end, Func func) {
   }
   return --first_false;
 }
+
+inline constexpr std::initializer_list<pll> adjacent_offsets = {
+    {0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+
+// pair pairwise operations
+#define MAKEOP(op)                                                             \
+  template <class K, class V>                                                  \
+  inline auto operator op(const std::pair<K, V> &lhs,                          \
+                          const std::pair<K, V> &rhs) {                        \
+    return std::make_pair(lhs.first op lhs.second, rhs.first op rhs.second);   \
+  }
+MAKEOP(+);
+MAKEOP(-);
+#undef MAKEOP
+
 } // namespace cpt
 
 // alias of max_element(allc(c))
