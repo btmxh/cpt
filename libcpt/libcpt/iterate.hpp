@@ -59,15 +59,6 @@ public:
   MAKEOP(>);
 #undef MAKEOP
 };
-} // namespace cpt
-
-namespace std {
-template <class Int> struct iterator_traits<::cpt::int_iterator<Int>> {
-  using difference_type = std::make_signed_t<Int>;
-  using value_type = Int;
-  using iterator_category = std::random_access_iterator_tag;
-};
-} // namespace std
 
 #ifdef __cpp_lib_span
 #include <span>
@@ -93,3 +84,14 @@ template <class It, class Func> It last_true(It begin, It end, Func func) {
   }
   return --first_false;
 }
+} // namespace cpt
+
+namespace std {
+template <class Int> struct iterator_traits<::cpt::int_iterator<Int>> {
+  using difference_type = std::make_signed_t<Int>;
+  using value_type = Int;
+  using iterator_category = std::random_access_iterator_tag;
+};
+} // namespace std
+
+using ii = cpt::int_iterator<cpt::ll>;
