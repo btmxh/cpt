@@ -6,6 +6,7 @@
 #include <utility>
 
 #pragma cpt begin
+#include "print.hpp"
 #include "is_iterable.hpp"
 #include "types.hpp"
 #pragma cpt end
@@ -36,7 +37,9 @@ template <class T, class Container = std::vector<T>>
 inline Container sized_input(std::istream &is, size_t n) {
   Container c;
   for (size_t i = 0; i < n; ++i) {
-    is >> std::inserter(c, std::end(c));
+    typename Container::value_type value;
+    is >> value;
+    c.insert(c.end(), value);
   }
   return c;
 }
