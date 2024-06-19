@@ -37,9 +37,13 @@ using msll = std::multiset<ll>;
 // shorthand for auto
 #define au auto
 
+inline constexpr ll relu(ll x) {
+  return std::max(x, 0ll);
+}
+
 inline size_t ll_to_size(ll x) {
   cpt_assert(x >= 0);
-  return static_cast<size_t>(std::min(x, 0ll));
+  return static_cast<size_t>(relu(x));
 }
 
 }; // namespace cpt
