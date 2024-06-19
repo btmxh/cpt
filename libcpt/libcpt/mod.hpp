@@ -124,10 +124,10 @@ inline constexpr div_int<Int, Mod> fast_combination(Int n, Int k) {
   return num / den;
 }
 
-template<class Int, ll Mod = MOD>
+template <class Int, ll Mod = MOD>
 inline constexpr div_int<Int, Mod> factorial(Int n) {
   div_int<Int, Mod> fac = 1;
-  for(Int i = 2; i <= n; ++i) {
+  for (Int i = 2; i <= n; ++i) {
     fac *= i;
   }
   return fac;
@@ -136,5 +136,9 @@ inline constexpr div_int<Int, Mod> factorial(Int n) {
 } // namespace cpt
 
 // aliases
-#define nck(...) fast_combination(__VA_ARGS__)
-#define fac(...) factorial(__VA_ARGS__)
+#define nck(...) ::cpt::fast_combination(__VA_ARGS__)
+#define fac(...) ::cpt::factorial(__VA_ARGS__)
+#define binpow(...) ::cpt::binary_pow(__VA_ARGS__)
+
+using mi = ::cpt::mod_int<::cpt::ll>;
+using mia = ::cpt::moda_int<::cpt::ll>;
