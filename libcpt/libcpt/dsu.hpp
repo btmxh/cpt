@@ -1,6 +1,9 @@
 #pragma once
 
+#pragma cpt begin
 #include "types.hpp"
+#pragma cpt end
+
 namespace cpt {
 class naive_disjoint_set {
   vll parent;
