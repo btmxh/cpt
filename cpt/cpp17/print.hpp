@@ -146,6 +146,13 @@ inline void perr(const auto &...args) { println_stderr(args...); }
     return;                                                                    \
   } while (0);
 
+#define py p("YES")
+#define pn p("NO")
+#define pry pr("YES")
+#define prn pr("NO")
+#define pyn(x) p(x? "YES" : "NO")
+#define pryn(x) pr(x? "YES" : "NO")
+
 #ifdef ONLINE_JUDGE
 #define DBG(...)
 #else
