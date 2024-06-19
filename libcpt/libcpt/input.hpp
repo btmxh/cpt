@@ -43,8 +43,12 @@ template <class T, class Container = std::vector<T>> T load_stdin(size_t n) {
   return sized_input<T, Container>(std::cin, n);
 }
 
-template<size_t N, class T = ::cpt::ll> inline std::array<T, N> input_stdin_array() {
-  return cpt::input_stdin<T>();
+template <size_t N, class T = ::cpt::ll>
+inline std::array<T, N> input_stdin_array() {
+  std::array<T, N> arr;
+  for (auto &a : arr)
+    std::cin >> a;
+  return arr;
 }
 
 } // namespace cpt
