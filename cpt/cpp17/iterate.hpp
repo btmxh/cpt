@@ -9,3 +9,7 @@
 #define fdiv(x, n)                                                             \
   for (::cpt::ll x = 1; x * x <= n; ++x)                                       \
     if (n % x == 0)
+
+#define all(v) ::std::begin(v), ::std::end(v)
+#define allc(v) ::std::cbegin(v), ::std::cend(v)
+#define allr(v) ::std::rbegin(v), ::std::rend(v)
