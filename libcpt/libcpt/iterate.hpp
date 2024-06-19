@@ -45,17 +45,20 @@ public:
   friend difference_type operator-(Int x, Int y) { return x.value - y.value; }
   friend difference_type operator+(Int x, Int y) { return x.value + y.value; }
 
-  bool operator==(const Int &other) const = default;
-  bool operator!=(const Int &other) const = default;
-  bool operator<(const Int &other) const = default;
-  bool operator>(const Int &other) const = default;
-  bool operator<=(const Int &other) const = default;
-  bool operator>=(const Int &other) const = default;
+#define MAKEOP(op)                                                             \
+  bool operator op(const Int &other) const { return value op other.value; }
+  MAKEOP(==);
+  MAKEOP(!=);
+  MAKEOP(<=);
+  MAKEOP(>=);
+  MAKEOP(<);
+  MAKEOP(>);
+#undef MAKEOP
 };
 } // namespace cpt
 
 namespace std {
-template <class Int> struct std::iterator_traits<::cpt::int_iterator<Int>> {
+template <class Int> struct iterator_traits<::cpt::int_iterator<Int>> {
   using difference_type = std::make_signed_t<Int>;
   using value_type = Int;
   using iterator_category = std::random_access_iterator_tag;

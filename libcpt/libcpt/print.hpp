@@ -15,7 +15,7 @@
 
 namespace cpt {
 
-std::string to_string(const auto &value) {
+template <class T> std::string to_string(const T &value) {
   std::stringstream ss;
   ss << value;
   return ss.str();
@@ -39,26 +39,26 @@ public:
 template <class OStream> class delim_stream {
 private:
   OStream &stream;
-  bool first = false;
+  bool first = true;
   std::string_view delim;
 
 public:
   delim_stream(OStream &stream, std::string_view delim = ", ")
       : stream{stream}, delim{delim} {}
 
-  void append(const auto &value) {
+  template <class T> void append(const T &value) {
     if (!first) {
       stream << delim;
     }
-    first = true;
+    first = false;
     stream << value;
   }
 
   // shorthand alias
-  void ps(const auto &value) { append(value); }
+  template <class T> void ps(const T &value) { append(value); }
 };
 
-inline void print_tuple(std::ostream &st, const auto &tup) {
+template <class Tup> inline void print_tuple(std::ostream &st, const Tup &tup) {
   delim_stream s{st};
   prefix_suffix_raii _{st};
   std::apply([&](const auto &...args) { (s.ps(args), ...); }, tup);
@@ -68,11 +68,13 @@ template <class... Args>
 inline std::ostream &operator<<(std::ostream &st,
                                 const std::tuple<Args...> &args) {
   print_tuple(st, args);
+  return st;
 }
 
 template <class K, class V>
 inline std::ostream &operator<<(std::ostream &st, const std::pair<K, V> &args) {
   print_tuple(st, args);
+  return st;
 }
 
 // iterable printing
@@ -83,6 +85,7 @@ std::ostream &operator<<(std::ostream &st, const T &value) {
   for (const auto &val : value) {
     s.ps(val);
   }
+  return st;
 }
 
 template <class T, class Seq>
@@ -91,9 +94,10 @@ std::ostream &operator<<(std::ostream &st, const std::queue<T, Seq> &value) {
   prefix_suffix_raii _{st};
   auto val_cpy = value;
   while (val_cpy.size()) {
-    s << val_cpy.front();
+    s.ps(val_cpy.front());
     val_cpy.pop();
   }
+  return st;
 }
 
 template <class T, class Seq>
@@ -102,36 +106,35 @@ std::ostream &operator<<(std::ostream &st, const std::stack<T, Seq> &value) {
   prefix_suffix_raii _{st};
   auto val_cpy = value;
   while (val_cpy.size()) {
-    s << val_cpy.top();
+    s.ps(val_cpy.top());
     val_cpy.pop();
   }
+  return st;
 }
 
 // function-like printing
-void print_stdout(const auto &...args) {
-  delim_stream s{std::cout, ","};
-  ((s << args), ...);
+template <class... Args> void print_stdout(const Args &...args) {
+  delim_stream s{std::cout, " "};
+  ((s.ps(args)), ...);
 }
-
-void print_stderr(const auto &...args) {
+template <class... Args> void print_stderr(const Args &...args) {
   delim_stream s{std::cout, ","};
-  ((s << args), ...);
+  ((s.ps(args)), ...);
 }
-
-void println_stdout(const auto &...args) {
+template <class... Args> void println_stdout(const Args &...args) {
   print_stdout(args...);
   std::cout << '\n';
 }
-
-void println_stderr(const auto &...args) {
+template <class... Args> void println_stderr(const Args &...args) {
   print_stderr(args...);
   std::cerr << '\n';
 }
 
 // debug inspection printing
-#define CPT_DEBUG_INSPECT(...) debug_inspect(#__VA_ARGS__, __VA_ARGS__)
+#define CPT_DEBUG_INSPECT(...) ::cpt::debug_inspect(#__VA_ARGS__, __VA_ARGS__)
 
-inline void debug_inspect(const char *prefix, const auto &...args) {
+template <class... Args>
+inline void debug_inspect(const char *prefix, const Args &...args) {
   print_stderr(prefix);
   std::cerr << "=";
   println_stderr(args...);
@@ -139,8 +142,13 @@ inline void debug_inspect(const char *prefix, const auto &...args) {
 
 }; // namespace cpt
 
-inline void p(const auto &...args) { println_stdout(args...); }
-inline void perr(const auto &...args) { println_stderr(args...); }
+template <class... Args> inline void p(const Args &...args) {
+  ::cpt::println_stdout(args...);
+}
+
+template <class... Args> inline void perr(const Args &...args) {
+  ::cpt::println_stderr(args...);
+}
 
 #define pr(...)                                                                \
   do {                                                                         \
@@ -152,8 +160,8 @@ inline void perr(const auto &...args) { println_stderr(args...); }
 #define pn p("NO")
 #define pry pr("YES")
 #define prn pr("NO")
-#define pyn(x) p(x? "YES" : "NO")
-#define pryn(x) pr(x? "YES" : "NO")
+#define pyn(x) p(x ? "YES" : "NO")
+#define pryn(x) pr(x ? "YES" : "NO")
 
 #ifdef ONLINE_JUDGE
 #define DBG(...)

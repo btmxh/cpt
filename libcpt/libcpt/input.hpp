@@ -15,10 +15,12 @@ namespace cpt {
 template <class K, class V>
 std::istream &operator>>(std::istream &is, std::pair<K, V> &value) {
   is >> value.first >> value.second;
+  return is;
 }
 template <class... Args>
 std::istream &operator>>(std::istream &is, std::tuple<Args...> &value) {
   std::apply([&](auto &...args) { ((is >> args), ...); });
+  return is;
 }
 
 template <class T, std::enable_if_t<is_iterable<T>>>
@@ -26,6 +28,7 @@ std::istream &operator>>(std::istream &is, T &value) {
   for (auto &val : value) {
     is >> val;
   }
+  return is;
 }
 
 // sized input
@@ -55,7 +58,7 @@ template <class T = long long> inline T input() {
   return cpt::input_stdin<T>();
 }
 
-template <class T = ll, class Container = std::vector<T>>
-inline Container load(ll n) {
-  return cpt::sized_input<T, Container>(std::cin, ll_to_size(n));
+template <class T = ::cpt::ll, class Container = std::vector<T>>
+inline Container load(::cpt::ll n) {
+  return cpt::sized_input<T, Container>(std::cin, ::cpt::ll_to_size(n));
 }
