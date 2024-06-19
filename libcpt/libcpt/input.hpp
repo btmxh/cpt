@@ -54,6 +54,10 @@ template <class T, class Container = std::vector<T>> T load_stdin(size_t n) {
   return sized_input<T, Container>(std::cin, n);
 }
 
+template<size_t N, class T = ::cpt::ll> inline std::array<T, N> input_stdin_array() {
+  return cpt::input_stdin<T>();
+}
+
 } // namespace cpt
 
 // CP friendly API
@@ -65,3 +69,5 @@ template <class T = ::cpt::ll, class Container = std::vector<T>>
 inline Container load(::cpt::ll n) {
   return cpt::sized_input<T, Container>(std::cin, ::cpt::ll_to_size(n));
 }
+
+#define ia(...) input_stdin_array<__VA_ARGS__>()
