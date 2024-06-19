@@ -140,6 +140,12 @@ inline void debug_inspect(const char *prefix, const auto &...args) {
 inline void p(const auto &...args) { println_stdout(args...); }
 inline void perr(const auto &...args) { println_stderr(args...); }
 
+#define pr(...)                                                                \
+  do {                                                                         \
+    p(__VA_ARGS__);                                                            \
+    return;                                                                    \
+  } while (0);
+
 #ifdef ONLINE_JUDGE
 #define DBG(...)
 #else
