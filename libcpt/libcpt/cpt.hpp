@@ -1,6 +1,7 @@
 #pragma cpt begin
 #include "assert.hpp"
 #include "algorithm.hpp"
+#include "best.hpp"
 #include "dsu.hpp"
 #include "input.hpp"
 #include "iterate.hpp"
