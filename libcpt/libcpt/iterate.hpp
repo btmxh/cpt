@@ -70,20 +70,6 @@ template <class T> inline auto bisect_span(span<T> sp) {
   return std::make_pair(left, right);
 }
 #endif
-
-// binary search helpers
-template <class It, class Func> It first_true(It begin, It end, Func func) {
-  return std::upper_bound(begin, end, nullptr,
-                          [func](auto, auto x) { return func(x); });
-}
-
-template <class It, class Func> It last_true(It begin, It end, Func func) {
-  It first_false = first_true(begin, end, std::not_fn(func));
-  if (first_false == end) {
-    return end;
-  }
-  return --first_false;
-}
 } // namespace cpt
 
 namespace std {
