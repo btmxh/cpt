@@ -38,21 +38,15 @@ public:
 
 template <class OStream> class delim_stream {
 private:
+public:
   OStream &stream;
   bool first = true;
   std::string_view delim;
 
-public:
   delim_stream(OStream &stream, std::string_view delim = ", ")
       : stream{stream}, delim{delim} {}
 
-  template <class T> void append(const T &value) {
-    if (!first) {
-      stream << delim;
-    }
-    first = false;
-    stream << value;
-  }
+  template <class T> void append(const T &value);
 
   // shorthand alias
   template <class T> void ps(const T &value) { append(value); }
@@ -78,7 +72,24 @@ inline std::ostream &operator<<(std::ostream &st, const std::pair<K, V> &args) {
 }
 
 // iterable printing
-template <class T, class = std::enable_if_t<is_iterable<T>>>
+
+template <class T>
+inline constexpr bool iterable_with_builtin_print =
+std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>;
+
+template <class T, class = void>
+inline constexpr bool is_const_iterable = false;
+
+template <class T>
+inline constexpr bool
+    is_const_iterable<T, std::void_t<decltype(std::declval<T>().cbegin()),
+                                     decltype(std::declval<T>().cend())>> =
+        true;
+static_assert(is_iterable<const std::vector<int>>);
+static_assert(!is_iterable<std::queue<int>>);
+template <class T, class = std::enable_if_t<
+                       is_const_iterable<T> &&
+                       !iterable_with_builtin_print<std::decay_t<T>>>>
 std::ostream &operator<<(std::ostream &st, const T &value) {
   delim_stream s{st};
   prefix_suffix_raii _{st};
@@ -112,13 +123,23 @@ std::ostream &operator<<(std::ostream &st, const std::stack<T, Seq> &value) {
   return st;
 }
 
+template <class OStream>
+template <class T>
+void delim_stream<OStream>::append(const T &value) {
+  if (!first) {
+    stream << delim;
+  }
+  first = false;
+  stream << value;
+}
+
 // function-like printing
 template <class... Args> void print_stdout(const Args &...args) {
   delim_stream s{std::cout, " "};
   ((s.ps(args)), ...);
 }
 template <class... Args> void print_stderr(const Args &...args) {
-  delim_stream s{std::cout, ","};
+  delim_stream s{std::cerr, ","};
   ((s.ps(args)), ...);
 }
 template <class... Args> void println_stdout(const Args &...args) {
@@ -166,5 +187,5 @@ template <class... Args> inline void perr(const Args &...args) {
 #ifdef ONLINE_JUDGE
 #define DBG(...)
 #else
-#define DBG(...) CPT_DEBUG_INSPECT(#__VA_ARGS__)
+#define DBG(...) CPT_DEBUG_INSPECT(__VA_ARGS__)
 #endif

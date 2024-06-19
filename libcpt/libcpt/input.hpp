@@ -2,12 +2,9 @@
 
 #include <iostream>
 #include <istream>
-#include <type_traits>
 #include <utility>
 
 #pragma cpt begin
-#include "print.hpp"
-#include "is_iterable.hpp"
 #include "types.hpp"
 #pragma cpt end
 
@@ -21,14 +18,6 @@ std::istream &operator>>(std::istream &is, std::pair<K, V> &value) {
 template <class... Args>
 std::istream &operator>>(std::istream &is, std::tuple<Args...> &value) {
   std::apply([&](auto &...args) { ((is >> args), ...); });
-  return is;
-}
-
-template <class T, std::enable_if_t<is_iterable<T>>>
-std::istream &operator>>(std::istream &is, T &value) {
-  for (auto &val : value) {
-    is >> val;
-  }
   return is;
 }
 
