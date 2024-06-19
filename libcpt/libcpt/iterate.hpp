@@ -42,11 +42,15 @@ public:
   Int operator--(int) { return value--; }
   Int operator+=(Int amt) { return value += amt; }
   Int operator-=(Int amt) { return value -= amt; }
-  friend difference_type operator-(Int x, Int y) { return x.value - y.value; }
-  friend difference_type operator+(Int x, Int y) { return x.value + y.value; }
+  friend difference_type operator-(int_iterator x, int_iterator y) {
+    return x.value - y.value;
+  }
+  friend Int operator+(int_iterator x, int_iterator y) {
+    return x.value + y.value;
+  }
 
 #define MAKEOP(op)                                                             \
-  bool operator op(const Int &other) const { return value op other.value; }
+  bool operator op(const Int &other) const { return value op other; }
   MAKEOP(==);
   MAKEOP(!=);
   MAKEOP(<=);
