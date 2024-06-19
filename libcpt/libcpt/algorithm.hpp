@@ -52,3 +52,19 @@ template <class Cont> auto minv(const Cont &c) {
   return min_element(std::cbegin(c), std::cend(c));
 }
 template <class Fn> auto cmpsel(Fn fn) { return ::cpt::compare_select(fn); }
+
+#define pb push_back
+#define eb emplace_back
+
+template<class Cont> auto popb(const Cont& c) {
+  auto back = c.back();
+  c.pop_back();
+  return back;
+}
+
+template<class Cont> auto popf(const Cont& c) {
+  auto front = c.front();
+  c.pop_front();
+  return front;
+}
+
