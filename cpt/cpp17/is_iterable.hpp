@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <type_traits>
+
 namespace cpt {
 
 template <class T, class = void> inline constexpr bool is_iterable = false;

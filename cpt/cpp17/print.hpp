@@ -9,7 +9,9 @@
 #include <string_view>
 #include <type_traits>
 
+#pragma cpt begin
 #include "is_iterable.hpp"
+#pragma cpt end
 
 namespace cpt {
 

@@ -1,7 +1,10 @@
 #pragma once
 
-#include "types.hpp"
 #include <limits>
+
+#pragma cpt begin
+#include "types.hpp"
+#pragma cpt end
 
 namespace cpt {
 inline constexpr ll MOD = 1000000007;

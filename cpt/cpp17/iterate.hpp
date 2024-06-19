@@ -6,6 +6,10 @@
 #include <type_traits>
 #include <utility>
 
+#pragma cpt begin
+#include "types.hpp"
+#pragma cpt end
+
 #define f(i, s, e) fs(i, s, e, 1)
 #define fs(i, s, e, st) for (::cpt::ll i = s; i < e; i += st)
 #define rf(i, s, e) rfs(i, s, e, 1)
@@ -21,7 +25,7 @@
 #define allr(v) ::std::rbegin(v), ::std::rend(v)
 
 namespace cpt {
-template <class Int> class int_iterator {
+template <class Int = ll> class int_iterator {
 private:
   Int value;
 

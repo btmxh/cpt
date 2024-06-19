@@ -1,11 +1,14 @@
 #pragma once
 
-#include "is_iterable.hpp"
-#include "types.hpp"
 #include <iostream>
 #include <istream>
 #include <type_traits>
 #include <utility>
+
+#pragma cpt begin
+#include "is_iterable.hpp"
+#include "types.hpp"
+#pragma cpt end
 
 namespace cpt {
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "assert.hpp"
 #include <queue>
 #include <string>
 #include <string_view>
@@ -10,6 +9,10 @@
 #include <vector>
 #include <map>
 #include <set>
+
+#pragma cpt begin
+#include "assert.hpp"
+#pragma cpt end
 
 namespace cpt {
 using ll = long long;
