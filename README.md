@@ -1,0 +1,2 @@
+# cpt
+competitive programming template
